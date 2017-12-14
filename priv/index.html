@@ -46,8 +46,9 @@
       function sendTxt() {
           if(websocket.readyState == websocket.OPEN){
               txt = $("#send_txt").val();
-              websocket.send(txt);
-              showScreen('sending: ' + txt);
+              usr = $("#username").val();
+              websocket.send(usr + txt);
+              showScreen('sending: ' + usr + txt);
           } else {
                showScreen('websocket is not connected');
           };
@@ -71,7 +72,9 @@
       };
 
       function onMessage(evt) {
-          showScreen('<span style="color: blue;">RESPONSE: ' + evt.data+ '</span>');
+          if ("--pong--" != evt.data) {
+            showScreen('<span style="color: blue;">RESPONSE: ' + evt.data+ '</span>');
+          }
       };
 
       function onError(evt) {

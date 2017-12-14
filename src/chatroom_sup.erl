@@ -5,7 +5,7 @@
 -export([start_link/0]).
 
 %% supervisor.
--export([init/1, start_chatroom/1]).
+-export([init/1, start_chatroom/2]).
 
 
 %% Helper macro for declaring children of supervisor
@@ -19,12 +19,13 @@ start_link() ->
 
 %% supervisor.
 
-start_chatroom(Name) ->
-    supervisor:start_child(?MODULE, [Name]).
+start_chatroom(Name, User) ->
+    supervisor:start_child(?MODULE, [Name, User]).
 
 init([]) ->
     % init active chatroom table
     ets:new(chatrooms, [set, named_table, public]),
+    ets:new(users,     [set, named_table, public]),
 
     Chatroom = {
         chatroom,
